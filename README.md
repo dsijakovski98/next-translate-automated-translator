@@ -2,8 +2,6 @@
 
 ## A script that translates [next-translate](https://github.com/aralroca/next-translate) type `.json` files
 
----
-
 ### Usage
 
 #### 1. Create a `json` file to translate
