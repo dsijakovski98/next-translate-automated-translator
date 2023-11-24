@@ -6,8 +6,8 @@ const locales: string[] = [];
 let fileName = "";
 
 args.forEach((arg) => {
-  if (arg.startsWith("-file=")) {
-    fileName = arg.split("=").pop()!.trim();
+  if (arg.endsWith(".json")) {
+    fileName = arg;
   } else {
     locales.push(arg);
   }
@@ -28,8 +28,7 @@ const parseContent = async (fileName: string) => {
   return content
     .split("\n")
     .map((token) => token.trim())
-    .filter((token) => token.length > 0)
-    .slice(1);
+    .filter((token) => token.length > 0);
 };
 
 locales.forEach(async (locale) => {

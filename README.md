@@ -31,11 +31,11 @@ locales
 
 #### 4. Run the script providing the following flags
 
-- `-file=<name_of_json_file>` (Ex. my_file.json - the above created file)
+- `<name_of_json_file>.json` (Ex. my_file.json - the above created file)
 - `<space separated list of locales>` (Ex. `fr es` - the above created locales folders)
 
 ```zsh
-npm start -- -file=my_file.json fr es
+npm start -- my_file.json fr es
 ```
 
 #### 5. Thats it!
