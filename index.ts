@@ -26,6 +26,7 @@ if (locales.length === 0) {
 const parseContent = async (fileName: string) => {
   const content = await Bun.file(fileName).text();
   return content
+    .trim()
     .split("\n")
     .map((token) => token.trim())
     .filter((token) => token.length > 0);
