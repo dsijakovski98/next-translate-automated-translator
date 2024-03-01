@@ -44,11 +44,15 @@ locales.forEach(async (locale) => {
     let index = 0;
     const translate = (blob: any) => {
       const stringVal = z.string().safeParse(blob);
+
       if (stringVal.success) {
+        if (!stringVal.data.length) return;
+
         localeText = localeText.replaceAll(
           stringVal.data,
           translatedContent[index]
         );
+
         index++;
         return;
       }
