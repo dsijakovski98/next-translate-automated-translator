@@ -5,8 +5,6 @@ const args = Bun.argv.slice(2);
 const locales: string[] = [];
 let fileName = "";
 
-const foundTranslations: Record<string, number> = {};
-
 type NthMatch = {
   content: string;
   pattern: string;
@@ -55,6 +53,7 @@ const parseContent = async (fileName: string) => {
 
 locales.forEach(async (locale) => {
   const basePath = `locales/${locale}`;
+  const foundTranslations: Record<string, number> = {};
 
   try {
     const translatedContent = await parseContent(`${basePath}/translated.txt`);
