@@ -5,6 +5,27 @@ const args = Bun.argv.slice(2);
 const locales: string[] = [];
 let fileName = "";
 
+const foundTranslations: Record<string, number> = {};
+
+type NthMatch = {
+  content: string;
+  pattern: string;
+  replaceWith: string;
+  n: number;
+};
+
+const replaceNthMatch = ({ content, pattern, replaceWith, n }: NthMatch) => {
+  let count = 0;
+
+  return content.replace(pattern, (match) => {
+    if (++count === n) {
+      return replaceWith;
+    }
+
+    return match;
+  });
+};
+
 args.forEach((arg) => {
   if (arg.endsWith(".json")) {
     fileName = arg;
@@ -48,19 +69,29 @@ locales.forEach(async (locale) => {
       if (stringVal.success) {
         if (!stringVal.data.length) return;
 
-        localeText = localeText.replaceAll(
-          stringVal.data,
-          translatedContent[index]
-        );
+        if (foundTranslations[stringVal.data]) {
+          foundTranslations[stringVal.data]++;
+        } else {
+          foundTranslations[stringVal.data] = 1;
+        }
+
+        localeText = replaceNthMatch({
+          content: localeText,
+          pattern: stringVal.data,
+          replaceWith: translatedContent[index],
+          n: foundTranslations[stringVal.data] ?? 1,
+        });
 
         index++;
         return;
       }
+
       const listVal = z.array(z.any()).safeParse(blob);
       if (listVal.success) {
         listVal.data.forEach((val) => translate(val));
         return;
       }
+
       const objectVal = z.record(z.string(), z.any()).safeParse(blob);
       if (objectVal.success) {
         Object.values(objectVal.data).forEach((val) => translate(val));
